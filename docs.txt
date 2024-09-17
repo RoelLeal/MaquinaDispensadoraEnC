@@ -1,0 +1,13 @@
+Problema que tuve con las constantes #define
+https://stackoverflow.com/questions/3025050/error-initializer-element-is-not-constant-when-trying-to-initialize-variable-w
+
+Investigación para crear una matriz de Strings
+https://es.stackoverflow.com/questions/572905/cómo-crear-una-matriz-de-cadenas-en-c
+
+Almacenar de forma dinamica arrays de Strings
+https://stackoverflow.com/questions/5935933/dynamically-create-an-array-of-strings-with-malloc
+
+
+
+
+
