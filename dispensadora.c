@@ -4,19 +4,24 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define len_productos 1
+#define len_productos 2
 
 int temp_dinero = 0, dinero_clientes = 0, band_dincliente = 1,
-menu_eleccion = 0, dinero_maquina = 0, productos_precios[4][4];
+menu_eleccion = 0, dinero_maquina = 0, 
+productos_precios[len_productos][len_productos];
 
 bool maquinaConfigurada = false;
 
 void menu();
 
 char buffer[1024];
-char*** matrizDeNombres; // El 4 es porque son 4 filas y 4 columnas
+char*** matrizDeNombres;
+char*** matrizDeCodigos;
+
 int precioDeProductos[len_productos][len_productos],
 cantidadDeProductos[len_productos][len_productos];
+
+int length = 0, i = 0, j = 0;
 
 void gotoxy(int x, int y) {
       HANDLE hcon;
@@ -49,27 +54,30 @@ void devolverDinero() {
 			printf("Devolviendo... $ 1 MXN");
 		}
 		i++;
-		sleep(1);
+		Sleep(1);
 	}
 	i+=2;	
 	gotoxy(49, i);
 	printf("Dinero del cliente en la m%cquina: %i", 160, dinero_clientes);
-	sleep(4);
+	Sleep(4);
 	menu();
 }
 
 int configurarMaquina() {
-    int i = 0, j = 0;
     system("cls");
     printf("---------------- CONFIGURAR MAQUINA EXPENDEDORA -------------\n");
-
     for (i = 0; i < len_productos; i++) {
         matrizDeNombres[i] = malloc(sizeof(char*) * len_productos);
         for (j = 0; j < len_productos; j++) {
             matrizDeNombres[i][j] = NULL;
         }
     }
-    
+    for (i = 0; i < len_productos; i++) {
+        matrizDeCodigos[i] = malloc(sizeof(char*) * len_productos);
+        for (j = 0; j < len_productos; j++) {
+            matrizDeCodigos[i][j] = NULL;
+        }
+    }
     for (i = 0; i < len_productos; i++) {
         for (j = 0; j < len_productos; j++) {
             printf("Nombre del producto: [%i][%i]\n", i, j);
@@ -77,15 +85,26 @@ int configurarMaquina() {
             fgets(buffer, 1024, stdin);
             buffer[strcspn(buffer, "\n")] = 0;
             
-            printf("Precio del producto: [%i][%i]\n", i, j);
-            scanf("%i", &precioDeProductos[i][j]);
-            
-            printf("Cantidad de producto: [%i][%i]\n", i, j);
-            scanf("%i", &cantidadDeProductos[i][j]);
-            
-            int length = strlen(buffer) + 1;
+            length = strlen(buffer) + 1;
             matrizDeNombres[i][j] = malloc(sizeof(char) * length);
             strcpy(matrizDeNombres[i][j], buffer);
+            fflush(stdin);
+            
+            printf("Ingresa c%cdigo del producto [CODE]: [%i][%i]\n", 162, i, j);
+            getchar();
+            fgets(buffer, 1024, stdin);
+            buffer[strcspn(buffer, "\n")] = 0;
+            
+            length = strlen(buffer) + 1;
+            matrizDeCodigos[i][j] = malloc(sizeof(char) * length);
+            strcpy(matrizDeCodigos[i][j], buffer);
+            fflush(stdin);
+            
+            printf("Precio del producto $: [%i][%i]\n", i, j);
+            scanf("%i", &precioDeProductos[i][j]);
+            
+            printf("Cantidad de producto [NUM]: [%i][%i]\n", i, j);
+            scanf("%i", &cantidadDeProductos[i][j]);
         }
     }
     printf("Ingresa cantidad de dinero que habr%c disponible en la m%cquina expendedora:\n", 160, 160);
@@ -98,34 +117,38 @@ int configurarMaquina() {
 
 void comprarProducto() {
 	system("cls");
-	int i = 0, j = 0;
-	printf("**************** M%cquina expendedora *******************\n", 160);
-	printf("+-----------------------------------------------------+\n");
-	printf("| +-------------------------------------------------+ |\n");
-	printf("| |                                                 | |\n");
-	for(i = 0; i < len_productos; i++) {
-		for(j = 0; j < len_productos; j++) {
-			gotoxy(10, 10);
-			printf("%s", matrizDeNombres[i][j]);
-		}
+	int i = 0, j = 0, k = 3, l = 5;
+	gotoxy(0, 0);
+	printf("**************** M%cquina expendedora *******************", 160);
+	gotoxy(0, 1);
+	printf("+-----------------------------------------------------+");
+	gotoxy(0, 2);
+	printf("| +-------------------------------------------------+ |");
+	for(i = 3; i < 15; i++) {
+		gotoxy(0, i);
+		printf("| |                                                 | |");
 	}
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| +-------------------------------------------------+ |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| +-------------------------------------------------+ |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| +-------------------------------------------------+ |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| |                                                 | |\n");
-	printf("| +-------------------------------------------------+ |\n");
+	for(i = 0; i < len_productos; i++) {
+		if(i != 0) {
+			k+=5;
+		}
+		for(j = 0; j < len_productos; j++) {
+			gotoxy(l, k);
+			printf("%s", matrizDeNombres[i][j]);
+			gotoxy(l, k+1);
+			printf("%s", matrizDeCodigos[i][j]);
+			gotoxy(l, k+2);
+			printf("%c%i", 36, precioDeProductos[i][j]);
+			gotoxy(l, k+3);
+			printf("CANT %i", cantidadDeProductos[i][j]);
+			l+=12;
+		}
+		gotoxy(0, k+4);
+		printf("| +-------------------------------------------------+ |");
+		l = 5;
+	}
+	printf("\n| +-------------------------------------------------+ |\n");
 	printf("+-----------------------------------------------------+\n");
-	
 }
 
 void ingresarDinero() {
@@ -165,7 +188,7 @@ void sePuedeDevolver() {
 		printf("| No se ha ingresado dinero en la m%cquina |", 160);
 		gotoxy(47, 17);
 		printf("+-----------------------------------------+");
-		sleep(5);
+		Sleep(5);
 		menu();
 	}else {
 		devolverDinero();
@@ -183,7 +206,7 @@ void estaConfigurada() {
 		printf("| No se ha configurado la m%cquina, seleccione 3 en el men%c   |", 160, 163);
 		gotoxy(37, 17);
 		printf("+------------------------------------------------------------+");
-		sleep(5);
+		Sleep(5);
 		menu();
 	}
 }
@@ -228,6 +251,7 @@ void menu() {
 
 int main() {
 	matrizDeNombres = malloc(sizeof(char**) * len_productos);
+	matrizDeCodigos = malloc(sizeof(char**) * len_productos);
 	menu();
 	return 0;
 }
