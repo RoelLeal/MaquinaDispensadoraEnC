@@ -7,7 +7,7 @@
 #define len_productos 4
 
 int temp_dinero = 0, dinero_clientes = 0, band_dincliente = 1,
-menu_eleccion = 0, dinero_maquina = 0, ciclo = 0,
+menu_eleccion = 0, dinero_maquina = 0, ciclo = 0, k = 4, l = 5,
 productos_precios[len_productos][len_productos];
 
 bool maquinaConfigurada = false;
@@ -67,84 +67,203 @@ void devolverDinero() {
 	menu();
 }
 
+//int configurarMaquina() {
+//    system("cls");
+//    gotoxy(36, 2);
+//    printf("---------------- CONFIGURAR MAQUINA EXPENDEDORA -------------\n");
+//    for (i = 0; i < len_productos; i++) {
+//        matrizDeNombres[i] = malloc(sizeof(char*) * len_productos);
+//        for (j = 0; j < len_productos; j++) {
+//            matrizDeNombres[i][j] = NULL;
+//        }
+//    }
+//    for (i = 0; i < len_productos; i++) {
+//        matrizDeCodigos[i] = malloc(sizeof(char*) * len_productos);
+//        for (j = 0; j < len_productos; j++) {
+//            matrizDeCodigos[i][j] = NULL;
+//        }
+//    }
+//    ciclo = 3;
+//    for (i = 0; i < len_productos; i++) {
+//        for (j = 0; j < len_productos; j++) {
+//            gotoxy(36, ciclo);
+//            printf("Nombre del producto: [%i][%i]\n", i, j);
+//            ciclo++;
+//            gotoxy(36, ciclo);
+//            ciclo++;
+//            getchar();
+//            fgets(buffer, 1024, stdin);
+//            buffer[strcspn(buffer, "\n")] = 0;
+//            
+//            length = strlen(buffer) + 1;
+//            matrizDeNombres[i][j] = malloc(sizeof(char) * length);
+//            strcpy(matrizDeNombres[i][j], buffer);
+//            
+//            gotoxy(36, ciclo);
+//            printf("Ingresa c%cdigo del producto [CODE]: [%i][%i]\n", 162, i, j);
+//            ciclo++;
+//            gotoxy(36, ciclo);
+//            ciclo++;
+//			fgets(buffer2, 1024, stdin);
+//            buffer2[strcspn(buffer2, "\n")] = 0;
+//            
+//            matrizDeCodigos[i][j] = malloc(sizeof(char) * strlen(buffer2) + 1);
+//            strcpy(matrizDeCodigos[i][j], buffer2);
+//            
+//            gotoxy(36, ciclo);
+//            printf("Precio del producto $: [%i][%i]\n", i, j);
+//            ciclo++;
+//            gotoxy(36, ciclo);
+//            ciclo++;
+//            scanf("%i", &precioDeProductos[i][j]);
+//            
+//            gotoxy(36, ciclo);
+//            printf("Cantidad de producto [NUM]: [%i][%i]\n", i, j);
+//            ciclo++;
+//            gotoxy(36, ciclo);
+//            ciclo++;
+//            scanf("%i", &cantidadDeProductos[i][j]);
+//        }
+//    }
+//    ciclo++;
+//    gotoxy(36, ciclo);
+//    printf("Ingresa cantidad de dinero que habr%c disponible en la m%cquina expendedora:\n", 160, 160);
+//    scanf("%i", &dinero_maquina);
+//    maquinaConfigurada = true;
+//    system("cls");
+//    menu();
+//    return 0;
+//}
+
 int configurarMaquina() {
     system("cls");
     gotoxy(36, 2);
     printf("---------------- CONFIGURAR MAQUINA EXPENDEDORA -------------\n");
+
+    const char* nombres[len_productos][len_productos] = {
+        {"Agua", "Refresco", "Snack", "Galletas"},
+        {"Jugos", "Dulces", "Chocolates", "Papas"},
+        {"Chicles", "Yogurt", "Energizante", "Sandwich"},
+        {"Cafe", "Te", "Fruta", "Cereal"}
+    };
+
+    const char* codigos[len_productos][len_productos] = {
+        {"A1", "A2", "A3", "A4"},
+        {"B1", "B2", "B3", "B4"},
+        {"C1", "C2", "C3", "C4"},
+        {"D1", "D2", "D3", "D4"}
+    };
+
+    int precios[len_productos][len_productos] = {
+        {10, 15, 12, 8},
+        {20, 5, 18, 10},
+        {3, 25, 22, 15},
+        {12, 6, 20, 13}
+    };
+
+    int cantidades[len_productos][len_productos] = {
+        {5, 7, 10, 12},
+        {4, 8, 3, 6},
+        {15, 10, 5, 9},
+        {3, 11, 2, 4}
+    };
+
     for (i = 0; i < len_productos; i++) {
         matrizDeNombres[i] = malloc(sizeof(char*) * len_productos);
-        for (j = 0; j < len_productos; j++) {
-            matrizDeNombres[i][j] = NULL;
-        }
-    }
-    for (i = 0; i < len_productos; i++) {
         matrizDeCodigos[i] = malloc(sizeof(char*) * len_productos);
         for (j = 0; j < len_productos; j++) {
-            matrizDeCodigos[i][j] = NULL;
+            matrizDeNombres[i][j] = malloc(strlen(nombres[i][j]) + 1);
+            strcpy(matrizDeNombres[i][j], nombres[i][j]);
+
+            matrizDeCodigos[i][j] = malloc(strlen(codigos[i][j]) + 1);
+            strcpy(matrizDeCodigos[i][j], codigos[i][j]);
+
+            precioDeProductos[i][j] = precios[i][j];
+
+            cantidadDeProductos[i][j] = cantidades[i][j];
         }
     }
-    ciclo = 3;
-    for (i = 0; i < len_productos; i++) {
-        for (j = 0; j < len_productos; j++) {
-            gotoxy(36, ciclo);
-            printf("Nombre del producto: [%i][%i]\n", i, j);
-            ciclo++;
-            gotoxy(36, ciclo);
-            ciclo++;
-            getchar();
-            fgets(buffer, 1024, stdin);
-            buffer[strcspn(buffer, "\n")] = 0;
-            
-            length = strlen(buffer) + 1;
-            matrizDeNombres[i][j] = malloc(sizeof(char) * length);
-            strcpy(matrizDeNombres[i][j], buffer);
-            
-            gotoxy(36, ciclo);
-            printf("Ingresa c%cdigo del producto [CODE]: [%i][%i]\n", 162, i, j);
-            ciclo++;
-            gotoxy(36, ciclo);
-            ciclo++;
-			fgets(buffer2, 1024, stdin);
-            buffer2[strcspn(buffer2, "\n")] = 0;
-            
-            matrizDeCodigos[i][j] = malloc(sizeof(char) * strlen(buffer2) + 1);
-            strcpy(matrizDeCodigos[i][j], buffer2);
-            
-            gotoxy(36, ciclo);
-            printf("Precio del producto $: [%i][%i]\n", i, j);
-            ciclo++;
-            gotoxy(36, ciclo);
-            ciclo++;
-            scanf("%i", &precioDeProductos[i][j]);
-            
-            gotoxy(36, ciclo);
-            printf("Cantidad de producto [NUM]: [%i][%i]\n", i, j);
-            ciclo++;
-            gotoxy(36, ciclo);
-            ciclo++;
-            scanf("%i", &cantidadDeProductos[i][j]);
-        }
-    }
-    ciclo++;
-    gotoxy(36, ciclo);
-    printf("Ingresa cantidad de dinero que habr%c disponible en la m%cquina expendedora:\n", 160, 160);
-    scanf("%i", &dinero_maquina);
+
+    dinero_maquina = 500;
     maquinaConfigurada = true;
     system("cls");
     menu();
     return 0;
 }
 
+//void comprarProducto() {
+//	system("cls");
+//	int k = 3, l = 5;
+//	gotoxy(0, 0);
+//	printf("**************** M%cquina expendedora *******************", 160);
+//	gotoxy(0, 1);
+//	printf("+-----------------------------------------------------+");
+//	gotoxy(0, 2);
+//	printf("| +-------------------------------------------------+ |");
+//	for(i = 3; i < 15; i++) {
+//		gotoxy(0, i);
+//		printf("| |                                                 | |");
+//	}
+//	for(i = 0; i < len_productos; i++) {
+//		if(i != 0) {
+//			k += 5;
+//		}
+//		for(j = 0; j < len_productos; j++) {
+//			gotoxy(l, k);
+//			printf("%s", matrizDeNombres[i][j]);
+//			gotoxy(l, k + 1);
+//			printf("%s", matrizDeCodigos[i][j]);
+//			gotoxy(l, k + 2);
+//			printf("%c%i", 36, precioDeProductos[i][j]);
+//			gotoxy(l, k + 3);
+//			printf("CANT %i", cantidadDeProductos[i][j]);
+//			l += 12;
+//		}
+//		gotoxy(0, k + 4);
+//		printf("| +-------------------------------------------------+ |");
+//		l = 5;
+//	}
+//	printf("\n| +-------------------------------------------------+ |\n");
+//	printf("+-----------------------------------------------------+\n");
+//	gotoxy(45, 10);
+//	getchar();
+//	scanf("%s", cliente_eleccion);
+//
+//	for(i = 0; i < len_productos; i++) {
+//		for(j = 0; j < len_productos; j++) {
+//			if(strcmp(cliente_eleccion, matrizDeCodigos[i][j]) == 0 
+//			&& dinero_clientes >= precioDeProductos[i][j]
+//			&& cantidadDeProductos[i][j] > 0) {
+//				dinero_clientes -= precioDeProductos[i][j];
+//				cantidadDeProductos[i][j]--;
+//				dinero_maquina += precioDeProductos[i][j];
+//				gotoxy(15, 30);
+//				printf("Comprado: %s\n", matrizDeNombres[i][j]);
+//				printf("Cambio restante: $%i\n", dinero_clientes);
+//				printf("Cantidad en stock %i\n", cantidadDeProductos[j][j]);
+//				sleep(5);
+//				menu();
+//				return;
+//			}
+//		}
+//	}
+//	gotoxy(0, 20);
+//	printf("Producto no encontrado o dinero insuficiente.\n");
+//	sleep(5);
+//	menu();
+//}
+
 void comprarProducto() {
 	system("cls");
-	int k = 3, l = 5;
 	gotoxy(0, 0);
-	printf("**************** M%cquina expendedora *******************", 160);
+	printf("Dinero en m%cquina: $ %i     Dinero del cliente: %i", 160, dinero_maquina, dinero_clientes);
 	gotoxy(0, 1);
-	printf("+-----------------------------------------------------+");
+	printf("**************** M%cquina expendedora *******************", 160);
 	gotoxy(0, 2);
+	printf("+-----------------------------------------------------+");
+	gotoxy(0, 3);
 	printf("| +-------------------------------------------------+ |");
-	for(i = 3; i < 15; i++) {
+	for(i = 4; i < 25; i++) {
 		gotoxy(0, i);
 		printf("| |                                                 | |");
 	}
@@ -169,9 +288,45 @@ void comprarProducto() {
 	}
 	printf("\n| +-------------------------------------------------+ |\n");
 	printf("+-----------------------------------------------------+\n");
-	gotoxy(45, 10);
-	getchar();
+	k = 4;
+	l = 5;
+	gotoxy(70, 5);
+	printf("Ingrese el c%cdigo del producto o 'C' para cancelar:", 162);
+	gotoxy(70, 6);
 	scanf("%s", cliente_eleccion);
+
+	if (strcmp(cliente_eleccion, "C") == 0 || strcmp(cliente_eleccion, "c") == 0) {
+		gotoxy(70, 7);
+		printf("Compra cancelada. Regresando al men%c principal...", 163);
+		gotoxy(70, 8);
+		printf("Devolviendo cambio restante...\n");
+		i = 15;
+		while(dinero_clientes > 0) {
+			i++;
+			gotoxy(70, i);
+			if(dinero_clientes >= 20) {
+				dinero_clientes -= 20;
+				printf("Devolviendo... $ 20 MXN\n");
+			} else if(dinero_clientes >= 10) {
+				dinero_clientes -= 10;
+				printf("Devolviendo... $ 10 MXN\n");
+			} else if(dinero_clientes >= 5) {
+				dinero_clientes -= 5;
+				printf("Devolviendo... $ 5 MXN\n");
+			} else if(dinero_clientes >= 2) {
+				dinero_clientes -= 2;
+				printf("Devolviendo... $ 2 MXN\n");
+			} else if(dinero_clientes >= 1) {
+				dinero_clientes -= 1;
+				printf("Devolviendo... $ 1 MXN\n");
+			}
+			sleep(1);
+		}
+		sleep(2);
+		band_dincliente = 1;
+		menu();
+		return;
+	}
 
 	for(i = 0; i < len_productos; i++) {
 		for(j = 0; j < len_productos; j++) {
@@ -181,22 +336,70 @@ void comprarProducto() {
 				dinero_clientes -= precioDeProductos[i][j];
 				cantidadDeProductos[i][j]--;
 				dinero_maquina += precioDeProductos[i][j];
-				gotoxy(15, 30);
+				gotoxy(70, 19);
 				printf("Comprado: %s\n", matrizDeNombres[i][j]);
-				printf("Cambio restante: $%i\n", dinero_clientes);
-				printf("Cantidad en stock %i\n", cantidadDeProductos[j][j]);
-				sleep(5);
+				gotoxy(70, 30);
+				printf("Cantidad en stock actualizada: %i\n", cantidadDeProductos[i][j]);
+				gotoxy(70, 20);
+				printf("Devolviendo cambio restante...\n");
+				i = 21;
+				while(dinero_clientes > 0) {
+					i++;
+					gotoxy(70, i);
+					if(dinero_clientes >= 20) {
+						dinero_clientes -= 20;
+						printf("Devolviendo... $ 20 MXN\n");
+					} else if(dinero_clientes >= 10) {
+						dinero_clientes -= 10;
+						printf("Devolviendo... $ 10 MXN\n");
+					} else if(dinero_clientes >= 5) {
+						dinero_clientes -= 5;
+						printf("Devolviendo... $ 5 MXN\n");
+					} else if(dinero_clientes >= 2) {
+						dinero_clientes -= 2;
+						printf("Devolviendo... $ 2 MXN\n");
+					} else if(dinero_clientes >= 1) {
+						dinero_clientes -= 1;
+						printf("Devolviendo... $ 1 MXN\n");
+					}
+					sleep(1);
+				}
+				sleep(3);
+				band_dincliente = 1;
 				menu();
 				return;
 			}
 		}
 	}
-	gotoxy(0, 20);
+	
+	gotoxy(70, 20);
 	printf("Producto no encontrado o dinero insuficiente.\n");
-	sleep(5);
+	i = 20;
+	while(dinero_clientes > 0) {
+		i++;
+		gotoxy(70, i);
+		if(dinero_clientes >= 20) {
+			dinero_clientes -= 20;
+			printf("Devolviendo... $ 20 MXN\n");
+		} else if(dinero_clientes >= 10) {
+			dinero_clientes -= 10;
+			printf("Devolviendo... $ 10 MXN\n");
+		} else if(dinero_clientes >= 5) {
+			dinero_clientes -= 5;
+			printf("Devolviendo... $ 5 MXN\n");
+		} else if(dinero_clientes >= 2) {
+			dinero_clientes -= 2;
+			printf("Devolviendo... $ 2 MXN\n");
+		} else if(dinero_clientes >= 1) {
+			dinero_clientes -= 1;
+			printf("Devolviendo... $ 1 MXN\n");
+		}
+		sleep(1);
+	}
+	sleep(3);
+	band_dincliente = 1;
 	menu();
 }
-
 
 void ingresarDinero() {
 	system("cls");
@@ -208,7 +411,8 @@ void ingresarDinero() {
 		i++;
 		gotoxy(50, i);
 		scanf("%i", &temp_dinero);
-		if(temp_dinero % 5 == 0 || temp_dinero == 2 || temp_dinero == 1) {
+		if(temp_dinero == 20 || temp_dinero == 10 || temp_dinero == 5
+			|| temp_dinero == 2 || temp_dinero == 2) {
 			dinero_clientes += temp_dinero;
 		}else {
 			i++;
@@ -223,6 +427,7 @@ void ingresarDinero() {
 		scanf("%i", &band_dincliente);
 	}
 	system("cls");
+	band_dincliente = 1;
 	menu();
 }
 
@@ -250,9 +455,9 @@ void estaConfigurada() {
 		gotoxy(37, 13);
 		printf("+------------------------------------------------------------+");
 		gotoxy(37, 15);
-		printf("| No se ha configurado la m%cquina, seleccione 3 en el men%c   |", 160, 163, 160);
+		printf("| No se ha configurado la m%cquina, seleccione 3 en el men%c   |", 160, 163);
 		gotoxy(37, 16);
-		printf("|       O no tiene dinero ingresado en la m%cquina             |");
+		printf("|       O no tiene dinero ingresado en la m%cquina            |", 160);
 		gotoxy(37, 18);
 		printf("+------------------------------------------------------------+");
 		sleep(5);
