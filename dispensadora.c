@@ -38,7 +38,7 @@ void gotoxy(int x, int y) {
 
 void devolverDinero() {
 	system("cls");
-	int i = 10;	
+	i = 10;	
 	while(dinero_clientes > 0) {
 		gotoxy(55, i);
 		if(dinero_clientes >= 20) {
@@ -60,11 +60,38 @@ void devolverDinero() {
 		i++;
 		sleep(1);
 	}
-	i+=2;	
+	i+=2;
 	gotoxy(49, i);
 	printf("Dinero del cliente en la m%cquina: %i", 160, dinero_clientes);
 	sleep(4);
 	menu();
+}
+
+void devolverDineroComprando(int _i, int sleep1, int sleep2) {
+	
+	while(dinero_clientes > 0) {
+		_i++;
+		gotoxy(70, _i);
+		if(dinero_clientes >= 20) {
+			dinero_clientes -= 20;
+			printf("Devolviendo... $ 20 MXN\n");
+		} else if(dinero_clientes >= 10) {
+			dinero_clientes -= 10;
+			printf("Devolviendo... $ 10 MXN\n");
+		} else if(dinero_clientes >= 5) {
+			dinero_clientes -= 5;
+			printf("Devolviendo... $ 5 MXN\n");
+		} else if(dinero_clientes >= 2) {
+			dinero_clientes -= 2;
+			printf("Devolviendo... $ 2 MXN\n");
+		} else if(dinero_clientes >= 1) {
+			dinero_clientes -= 1;
+			printf("Devolviendo... $ 1 MXN\n");
+		}
+		sleep(sleep1);
+	}
+	sleep(sleep2);
+	band_dincliente = 1;
 }
 
 //int configurarMaquina() {
@@ -191,68 +218,6 @@ int configurarMaquina() {
     return 0;
 }
 
-//void comprarProducto() {
-//	system("cls");
-//	int k = 3, l = 5;
-//	gotoxy(0, 0);
-//	printf("**************** M%cquina expendedora *******************", 160);
-//	gotoxy(0, 1);
-//	printf("+-----------------------------------------------------+");
-//	gotoxy(0, 2);
-//	printf("| +-------------------------------------------------+ |");
-//	for(i = 3; i < 15; i++) {
-//		gotoxy(0, i);
-//		printf("| |                                                 | |");
-//	}
-//	for(i = 0; i < len_productos; i++) {
-//		if(i != 0) {
-//			k += 5;
-//		}
-//		for(j = 0; j < len_productos; j++) {
-//			gotoxy(l, k);
-//			printf("%s", matrizDeNombres[i][j]);
-//			gotoxy(l, k + 1);
-//			printf("%s", matrizDeCodigos[i][j]);
-//			gotoxy(l, k + 2);
-//			printf("%c%i", 36, precioDeProductos[i][j]);
-//			gotoxy(l, k + 3);
-//			printf("CANT %i", cantidadDeProductos[i][j]);
-//			l += 12;
-//		}
-//		gotoxy(0, k + 4);
-//		printf("| +-------------------------------------------------+ |");
-//		l = 5;
-//	}
-//	printf("\n| +-------------------------------------------------+ |\n");
-//	printf("+-----------------------------------------------------+\n");
-//	gotoxy(45, 10);
-//	getchar();
-//	scanf("%s", cliente_eleccion);
-//
-//	for(i = 0; i < len_productos; i++) {
-//		for(j = 0; j < len_productos; j++) {
-//			if(strcmp(cliente_eleccion, matrizDeCodigos[i][j]) == 0 
-//			&& dinero_clientes >= precioDeProductos[i][j]
-//			&& cantidadDeProductos[i][j] > 0) {
-//				dinero_clientes -= precioDeProductos[i][j];
-//				cantidadDeProductos[i][j]--;
-//				dinero_maquina += precioDeProductos[i][j];
-//				gotoxy(15, 30);
-//				printf("Comprado: %s\n", matrizDeNombres[i][j]);
-//				printf("Cambio restante: $%i\n", dinero_clientes);
-//				printf("Cantidad en stock %i\n", cantidadDeProductos[j][j]);
-//				sleep(5);
-//				menu();
-//				return;
-//			}
-//		}
-//	}
-//	gotoxy(0, 20);
-//	printf("Producto no encontrado o dinero insuficiente.\n");
-//	sleep(5);
-//	menu();
-//}
-
 void comprarProducto() {
 	system("cls");
 	gotoxy(0, 0);
@@ -300,37 +265,14 @@ void comprarProducto() {
 		printf("Compra cancelada. Regresando al men%c principal...", 163);
 		gotoxy(70, 8);
 		printf("Devolviendo cambio restante...\n");
-		i = 15;
-		while(dinero_clientes > 0) {
-			i++;
-			gotoxy(70, i);
-			if(dinero_clientes >= 20) {
-				dinero_clientes -= 20;
-				printf("Devolviendo... $ 20 MXN\n");
-			} else if(dinero_clientes >= 10) {
-				dinero_clientes -= 10;
-				printf("Devolviendo... $ 10 MXN\n");
-			} else if(dinero_clientes >= 5) {
-				dinero_clientes -= 5;
-				printf("Devolviendo... $ 5 MXN\n");
-			} else if(dinero_clientes >= 2) {
-				dinero_clientes -= 2;
-				printf("Devolviendo... $ 2 MXN\n");
-			} else if(dinero_clientes >= 1) {
-				dinero_clientes -= 1;
-				printf("Devolviendo... $ 1 MXN\n");
-			}
-			sleep(1);
-		}
-		sleep(2);
-		band_dincliente = 1;
+		devolverDineroComprando(15, 1, 2);
 		menu();
 		return;
 	}
 
 	for(i = 0; i < len_productos; i++) {
 		for(j = 0; j < len_productos; j++) {
-			if(strcmp(cliente_eleccion, matrizDeCodigos[i][j]) == 0 
+			if(strcmp(cliente_eleccion, matrizDeCodigos[i][j]) == 0
 			&& dinero_clientes >= precioDeProductos[i][j]
 			&& cantidadDeProductos[i][j] > 0) {
 				dinero_clientes -= precioDeProductos[i][j];
@@ -342,30 +284,7 @@ void comprarProducto() {
 				printf("Cantidad en stock actualizada: %i\n", cantidadDeProductos[i][j]);
 				gotoxy(70, 20);
 				printf("Devolviendo cambio restante...\n");
-				i = 21;
-				while(dinero_clientes > 0) {
-					i++;
-					gotoxy(70, i);
-					if(dinero_clientes >= 20) {
-						dinero_clientes -= 20;
-						printf("Devolviendo... $ 20 MXN\n");
-					} else if(dinero_clientes >= 10) {
-						dinero_clientes -= 10;
-						printf("Devolviendo... $ 10 MXN\n");
-					} else if(dinero_clientes >= 5) {
-						dinero_clientes -= 5;
-						printf("Devolviendo... $ 5 MXN\n");
-					} else if(dinero_clientes >= 2) {
-						dinero_clientes -= 2;
-						printf("Devolviendo... $ 2 MXN\n");
-					} else if(dinero_clientes >= 1) {
-						dinero_clientes -= 1;
-						printf("Devolviendo... $ 1 MXN\n");
-					}
-					sleep(1);
-				}
-				sleep(3);
-				band_dincliente = 1;
+				devolverDineroComprando(21, 1, 3);
 				menu();
 				return;
 			}
@@ -374,36 +293,13 @@ void comprarProducto() {
 	
 	gotoxy(70, 20);
 	printf("Producto no encontrado o dinero insuficiente.\n");
-	i = 20;
-	while(dinero_clientes > 0) {
-		i++;
-		gotoxy(70, i);
-		if(dinero_clientes >= 20) {
-			dinero_clientes -= 20;
-			printf("Devolviendo... $ 20 MXN\n");
-		} else if(dinero_clientes >= 10) {
-			dinero_clientes -= 10;
-			printf("Devolviendo... $ 10 MXN\n");
-		} else if(dinero_clientes >= 5) {
-			dinero_clientes -= 5;
-			printf("Devolviendo... $ 5 MXN\n");
-		} else if(dinero_clientes >= 2) {
-			dinero_clientes -= 2;
-			printf("Devolviendo... $ 2 MXN\n");
-		} else if(dinero_clientes >= 1) {
-			dinero_clientes -= 1;
-			printf("Devolviendo... $ 1 MXN\n");
-		}
-		sleep(1);
-	}
-	sleep(3);
-	band_dincliente = 1;
+	devolverDineroComprando(20, 1, 3);
 	menu();
 }
 
 void ingresarDinero() {
 	system("cls");
-	int i = 2;
+	i = 2;
 	while(band_dincliente == 1) {
 		i++;
 		gotoxy(50, i);
@@ -412,7 +308,7 @@ void ingresarDinero() {
 		gotoxy(50, i);
 		scanf("%i", &temp_dinero);
 		if(temp_dinero == 20 || temp_dinero == 10 || temp_dinero == 5
-			|| temp_dinero == 2 || temp_dinero == 2) {
+			|| temp_dinero == 2 || temp_dinero == 1) {
 			dinero_clientes += temp_dinero;
 		}else {
 			i++;
